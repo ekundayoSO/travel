@@ -78,8 +78,6 @@ const ActivityList = () => {
             <th>Day Three</th>
             <th>Day Four</th>
             <th>Day Five</th>
-            <th>Longitude</th>
-            <th>Latitude</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -91,8 +89,6 @@ const ActivityList = () => {
               <td>{activity.dayThree}</td>
               <td>{activity.dayFour}</td>
               <td>{activity.dayFive}</td>
-              <td>{activity.longitude}</td>
-              <td>{activity.latitude}</td>
               <td className="d-flex gap-1">
                 <Link to={`/activities/${activity.id}`}>
                   <button className="btn btn-primary btn-sm">View</button>

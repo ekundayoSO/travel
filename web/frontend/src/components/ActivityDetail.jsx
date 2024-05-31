@@ -40,8 +40,6 @@ const ActivityDetail = () => {
           <p>Day Three: {activity.dayThree}</p>
           <p>Day Four: {activity.dayFour}</p>
           <p>Day Five: {activity.dayFive}</p>
-          <p>Longitude: {activity.longitude}</p>
-          <p>Latitude: {activity.latitude}</p>
         </div>
       )}
     </div>

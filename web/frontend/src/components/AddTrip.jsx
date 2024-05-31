@@ -9,6 +9,8 @@ const AddTrip = () => {
   const [checkOut, setCheckOut] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -20,7 +22,9 @@ const AddTrip = () => {
         checkIn,
         checkOut,
         email,
-        mobile
+        mobile,
+        longitude,
+        latitude,
       })
       .then((response) => {
         console.log("Success:", response.data);
@@ -92,6 +96,26 @@ const AddTrip = () => {
           required
         />
       </div>
+      <div>
+        <label htmlFor="longitude">Longitude</label>
+        <input
+          id="longitude"
+          type="number"
+          value={longitude}
+          onChange={(e) => setLongitude(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="latitude">Latitude</label>
+        <input
+          id="latitude"
+          type="number"
+          value={latitude}
+          onChange={(e) => setLatitude(e.target.value)}
+          required
+        />
+      </div>
       <button className="btn btn-success btn-sm mt-2" type="submit">
         Submit
       </button>
@@ -100,3 +124,5 @@ const AddTrip = () => {
 };
 
 export default AddTrip;
+
+
