@@ -31,10 +31,11 @@ const TripDetail = () => {
           <p>Name: {trip.name}</p>
           <p>Email: {trip.email}</p>
           <p>Mobile: {trip.mobile}</p>
+          <p>Longitude: {trip.longitude}</p>
+          <p>Latitude: {trip.latitude}</p>
         </div>
       </div>
-      <div>
-      </div>
+      <div></div>
     </div>
   );
 };

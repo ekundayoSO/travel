@@ -30,6 +30,8 @@ class TripController extends AbstractController
                 'name' => $trip->getName(),
                 'email' => $trip->getEmail(),
                 'mobile' => $trip->getMobile(),
+                'longitude' => $trip->getLongitude(),
+                'latitude' => $trip->getLatitude()
                 
             ];
         }
@@ -50,17 +52,21 @@ class TripController extends AbstractController
         $name = $data['name'] ?? null;
         $email = $data['email'] ?? null;
         $mobile = $data['mobile'] ?? null;
+        $longitude = $data['longitude'] ?? null;
+        $latitude = $data['latitude'] ?? null;
 
-        $hashedEmail = hash('sha256', $email);
-        $hashedMobile = hash('sha256', $mobile);
+        $encryped_email = crypt($email, '$2y$07usesomesillystringforsalt$');
+        $encryped_mobile = crypt($mobile, '$2y$07usesomesillystringforsalt$');
 
         $trip = new Trip();
         $trip->setDestination(trim($destination));
         $trip->setCheckIn(new \DateTime($checkIn));
         $trip->setCheckOut(new \DateTime($checkOut));
         $trip->setName(trim($name));
-        $trip->setEmail(trim($hashedEmail));
-        $trip->setMobile(trim($hashedMobile));
+        $trip->setEmail($encryped_email);
+        $trip->setMobile($encryped_mobile);
+        $trip->setLongitude($longitude);
+        $trip->setLatitude($latitude);
         
         $entityManager->persist($trip);
         $entityManager->flush();
@@ -73,14 +79,11 @@ class TripController extends AbstractController
             'name' => $trip->getName(),
             'email' => $trip->getEmail(),
             'mobile' => $trip->getMobile(),
-            
+            'longitude' => $trip->getLongitude(),
+            'latitude' => $trip->getLatitude()   
         ];
 
         return $this->json($data);
-
-        if (!$data) {
-            return $this->redirectToRoute('trip_index');
-        }
 
     }
 
@@ -102,6 +105,8 @@ class TripController extends AbstractController
             'name' => $trip->getName(),
             'email' => $trip->getEmail(),
             'mobile' => $trip->getMobile(),
+            'longitude' => $trip->getLongitude(),
+            'latitude' => $trip->getLatitude()
         ];
 
         return $this->json($data);
@@ -119,6 +124,12 @@ class TripController extends AbstractController
         $name = $data['name'] ?? null;
         $email = $data['email'] ?? null;
         $mobile = $data['mobile'] ?? null;
+        $longitude = $data['longitude'] ?? null;
+        $latitude = $data['latitude'] ?? null;
+
+        $encryped_email = crypt($email, '$2y$07usesomesillystringforsalt$');
+        $encryped_mobile = crypt($mobile, '$2y$07usesomesillystringforsalt$');
+
         
         $trip = $entityManager->getRepository(Trip::class)->find($id);
 
@@ -126,19 +137,14 @@ class TripController extends AbstractController
             return $this->json('No trip found for id ' . $id, 404);
         }
 
-        if ($email !== null) {
-            $email = hash('sha256', $email);
-        }
-        if ($mobile !== null) {
-            $mobile = hash('sha256', $mobile);
-        }
-
         $trip->setDestination(trim($destination));
         $trip->setCheckIn(new \DateTime($checkIn));
         $trip->setCheckOut(new \DateTime($checkOut));
         $trip->setName(trim($name));
-        $trip->setEmail(trim($email));
-        $trip->setMobile(trim($mobile));
+        $trip->setEmail(trim($encryped_email));
+        $trip->setMobile(trim($encryped_mobile));
+        $trip->setLongitude($longitude);
+        $trip->setLatitude($latitude);
         
         $entityManager->persist($trip);
         $entityManager->flush();
@@ -150,7 +156,9 @@ class TripController extends AbstractController
             'checkOut' => $trip->getCheckOut()->format('Y-m-d'),
             'name' => $trip->getName(),
             'email' => $trip->getEmail(),
-            'mobile' => $trip->getMobile()
+            'mobile' => $trip->getMobile(),
+            'longitude' => $trip->getLongitude(),
+            'latitude' => $trip->getLatitude()
         ];
         return $this->json($data);
     }

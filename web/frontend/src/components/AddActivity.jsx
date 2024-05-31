@@ -8,8 +8,6 @@ const AddActivity = () => {
   const [dayThree, setDayThree] = useState("");
   const [dayFour, setDayFour] = useState("");
   const [dayFive, setDayFive] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [latitude, setLatitude] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -21,12 +19,10 @@ const AddActivity = () => {
         dayThree,
         dayFour,
         dayFive,
-        longitude,
-        latitude,
       })
       .then((response) => {
         console.log("Success:", response.data);
-        navigate("/trips");
+        navigate("/activities");
       })
       .catch((error) => console.error("Error:", error));
   };
@@ -87,28 +83,6 @@ const AddActivity = () => {
           onChange={(e) => setDayFive(e.target.value)}
           placeholder="Enter additional details here..."
           rows="4"
-        />
-      </div>
-      <div>
-        <label htmlFor="longitude">Longitude</label>
-        <input
-          id="longitude"
-          type="number"
-          value={longitude}
-          onChange={(e) => setLongitude(e.target.value)}
-          step="0.000001"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="latitude">Latitude</label>
-        <input
-          id="latitude"
-          type="number"
-          value={latitude}
-          onChange={(e) => setLatitude(e.target.value)}
-          step="0.000001"
-          required
         />
       </div>
       <button className="btn btn-success btn-sm mt-2" type="submit">

@@ -12,7 +12,7 @@ const EditActivity = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`http://localhost:8002/api/activitys/${id}`)
+      .get(`http://localhost:8002/api/activities/${id}`)
       .then((response) => {
         setActivity(response.data);
         setIsLoading(false);
@@ -33,9 +33,9 @@ const EditActivity = () => {
     e.preventDefault();
     setIsLoading(true);
     axios
-      .put(`http://localhost:8002/api/activitys/${id}`, activity)
+      .put(`http://localhost:8002/api/activities/${id}`, activity)
       .then(() => {
-        navigate("/");
+        navigate("/activities");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -51,7 +51,7 @@ const EditActivity = () => {
   }
 
   if (!activity) {
-    return <p>activity data is not available.</p>;
+    return <p>Activity data is not available.</p>;
   }
 
   return (
@@ -116,30 +116,6 @@ const EditActivity = () => {
             onChange={handleInputChange}
             placeholder="Enter additional details here..."
             rows="4"
-            required
-          />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="longitude">Longitude</label>
-          <input
-            id="longitude"
-            type="number"
-            name="longitude"
-            value={activity.longitude}
-            onChange={handleInputChange}
-            step="0.000001"
-            required
-          />
-        </div>
-        <div className="mb-2">
-          <label htmlFor="latitude">Latitude</label>
-          <input
-            id="latitude"
-            type="number"
-            name="latitude"
-            value={activity.latitude}
-            onChange={handleInputChange}
-            step="0.000001"
             required
           />
         </div>

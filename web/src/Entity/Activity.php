@@ -28,12 +28,6 @@ class Activity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $day_5 = null;
 
-    #[ORM\Column]
-    private ?float $longitude = null;
-
-    #[ORM\Column]
-    private ?float $latitude = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -99,27 +93,4 @@ class Activity
         return $this;
     }
 
-    public function getLongitude(): ?float
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(float $longitude): static
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    public function getLatitude(): ?float
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(float $latitude): static
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
 }

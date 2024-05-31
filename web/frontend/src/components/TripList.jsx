@@ -55,13 +55,8 @@ const TripList = () => {
             <th>Check Out</th>
             <th>E-mail</th>
             <th>Mobile</th>
-            {/* <th>Day One</th>
-            <th>Day Two</th>
-            <th>Day Three</th>
-            <th>Day Four</th>
-            <th>Day Five</th>
             <th>Longitude</th>
-            <th>Latitude</th> */}
+            <th>Latitude</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -74,13 +69,8 @@ const TripList = () => {
               <td>{trip.checkOut}</td>
               <td>{trip.email}</td>
               <td>{trip.mobile}</td>
-              {/* <td>{trip.dayOne}</td>
-              <td>{trip.dayTwo}</td>
-              <td>{trip.dayThree}</td>
-              <td>{trip.dayFour}</td>
-              <td>{trip.dayFive}</td>
               <td>{trip.longitude}</td>
-              <td>{trip.latitude}</td> */}
+              <td>{trip.latitude}</td>
               <td className="d-flex gap-1">
                 <Link to={`/trips/${trip.id}`}>
                   <button className="btn btn-primary btn-sm">View</button>

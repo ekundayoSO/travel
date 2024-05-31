@@ -125,6 +125,30 @@ const EditTrip = () => {
             required
           />
         </div>
+        <div className="mb-2">
+          <label htmlFor="longitude">Longitude</label>
+          <input
+            id="longitude"
+            type="number"
+            name="longitude"
+            value={trip.longitude}
+            onChange={handleInputChange}
+            step="0.000001"
+            required
+          />
+        </div>
+        <div className="mb-2">
+          <label htmlFor="latitude">Latitude</label>
+          <input
+            id="latitude"
+            type="number"
+            name="latitude"
+            value={trip.latitude}
+            onChange={handleInputChange}
+            step="0.000001"
+            required
+          />
+        </div>
         <button
           className="btn btn-primary btn-sm mt-2"
           type="submit"
