@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/edit/:id" element={<EditTrip />} />
     
         <Route path="/activities" element={<ActivityList />} />
-        <Route path="/addActivity" element={<AddActivity />} />
+        {/* <Route path="/addActivity" element={<AddActivity />} /> */}
         <Route path="/editActivity/:id" element={<EditActivity />} />
         <Route path="/activities/:id" element={<ActivityDetail />} /> 
         <Route path="/add" element={<Itinerary />} />

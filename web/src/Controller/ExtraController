@@ -14,23 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 #[Route('/api', name: 'api_')]
 class TripController extends AbstractController
 {
-    private $encryptionMethod = 'AES-256-CBC';
-    private $secretKey = 'your_secret_key';
-    private $secretIv = 'your_secret_iv';
-
-    private function encrypt($data)
-    {
-        $key = substr(hash('sha256', $this->secretKey), 0, 8); 
-        $iv = substr(hash('sha256', $this->secretIv), 0, 16);
-        return base64_encode(openssl_encrypt($data, $this->encryptionMethod, $key, 0, $iv));
-    }
-
-    private function decrypt($data)
-    {
-        $key = substr(hash('sha256', $this->secretKey), 0, 8); 
-        $iv = substr(hash('sha256', $this->secretIv), 0, 16);
-        return openssl_decrypt(base64_decode($data), $this->encryptionMethod, $key, 0, $iv);
-    }
     #[Route('/trips', name: 'trip_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): JsonResponse
     {
@@ -49,10 +32,12 @@ class TripController extends AbstractController
                 'mobile' => $trip->getMobile(),
                 'longitude' => $trip->getLongitude(),
                 'latitude' => $trip->getLatitude()
+                
             ];
         }
 
         return $this->json($data);
+        
     }
 
     #[Route('/trips', name: 'create_trip', methods: ['POST'])]
@@ -60,7 +45,7 @@ class TripController extends AbstractController
     {
         $content = $request->getContent();
         $data = json_decode($content, true);
-
+        
         $destination = $data['destination'] ?? null;
         $checkIn = $data['checkIn'] ?? null;
         $checkOut = $data['checkOut'] ?? null;
@@ -70,16 +55,19 @@ class TripController extends AbstractController
         $longitude = $data['longitude'] ?? null;
         $latitude = $data['latitude'] ?? null;
 
+        $encryped_email = crypt($email, '$2y$07usesomesillystringforsalt$');
+        $encryped_mobile = crypt($mobile, '$2y$07usesomesillystringforsalt$');
+
         $trip = new Trip();
         $trip->setDestination(trim($destination));
         $trip->setCheckIn(new \DateTime($checkIn));
         $trip->setCheckOut(new \DateTime($checkOut));
         $trip->setName(trim($name));
-        $trip->setEmail($this->encrypt($email));
-        $trip->setMobile($this->encrypt($mobile));
+        $trip->setEmail($encryped_email);
+        $trip->setMobile($encryped_mobile);
         $trip->setLongitude($longitude);
         $trip->setLatitude($latitude);
-
+        
         $entityManager->persist($trip);
         $entityManager->flush();
 
@@ -89,13 +77,14 @@ class TripController extends AbstractController
             'checkIn' => $trip->getCheckIn()->format('Y-m-d'),
             'checkOut' => $trip->getCheckOut()->format('Y-m-d'),
             'name' => $trip->getName(),
-            'email' => $this->decrypt($trip->getEmail()),
-            'mobile' => $this->decrypt($trip->getMobile()),
+            'email' => $trip->getEmail(),
+            'mobile' => $trip->getMobile(),
             'longitude' => $trip->getLongitude(),
-            'latitude' => $trip->getLatitude()
+            'latitude' => $trip->getLatitude()   
         ];
 
         return $this->json($data);
+
     }
 
     #[Route('/trips/{id}', name: 'trip_show', methods: ['GET'])]
@@ -104,6 +93,7 @@ class TripController extends AbstractController
         $trip = $entityManager->getRepository(Trip::class)->find($id);
 
         if (!$trip) {
+
             return $this->json('No trip found for id ' . $id, 404);
         }
 
@@ -137,6 +127,10 @@ class TripController extends AbstractController
         $longitude = $data['longitude'] ?? null;
         $latitude = $data['latitude'] ?? null;
 
+        $encryped_email = crypt($email, '$2y$07usesomesillystringforsalt$');
+        $encryped_mobile = crypt($mobile, '$2y$07usesomesillystringforsalt$');
+
+        
         $trip = $entityManager->getRepository(Trip::class)->find($id);
 
         if (!$trip) {
@@ -147,15 +141,11 @@ class TripController extends AbstractController
         $trip->setCheckIn(new \DateTime($checkIn));
         $trip->setCheckOut(new \DateTime($checkOut));
         $trip->setName(trim($name));
-        if ($email !== null) {
-            $trip->setEmail($this->encrypt($email));
-        }
-        if ($mobile !== null) {
-            $trip->setMobile($this->encrypt($mobile));
-        }
+        $trip->setEmail(trim($encryped_email));
+        $trip->setMobile(trim($encryped_mobile));
         $trip->setLongitude($longitude);
         $trip->setLatitude($latitude);
-
+        
         $entityManager->persist($trip);
         $entityManager->flush();
 
@@ -165,16 +155,16 @@ class TripController extends AbstractController
             'checkIn' => $trip->getCheckIn()->format('Y-m-d'),
             'checkOut' => $trip->getCheckOut()->format('Y-m-d'),
             'name' => $trip->getName(),
-            'email' => $this->decrypt($trip->getEmail()),
-            'mobile' => $this->decrypt($trip->getMobile()),
+            'email' => $trip->getEmail(),
+            'mobile' => $trip->getMobile(),
             'longitude' => $trip->getLongitude(),
             'latitude' => $trip->getLatitude()
         ];
-
         return $this->json($data);
     }
 
-    #[Route('/trips/{id}', name: 'trip_delete', methods: ['DELETE'])]
+
+    #[Route('/trips/{id}', name: 'trip_delete', methods: ['delete'])]
     public function delete(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $trip = $entityManager->getRepository(Trip::class)->find($id);
