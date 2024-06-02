@@ -65,7 +65,7 @@ const ActivityList = () => {
   return (
     <div>
       <h1 className="text-center">Journey List</h1>
-      <Link to="/addactivity">
+      <Link to="/add">
         <button className="btn btn-success btn-sm btn-position">
           New Activity
         </button>
@@ -93,7 +93,7 @@ const ActivityList = () => {
                 <Link to={`/activities/${activity.id}`}>
                   <button className="btn btn-primary btn-sm">View</button>
                 </Link>
-                <Link to={`/edit/${activity.id}`}>
+                <Link to={`/editActivity/${activity.id}`}>
                   <button className="btn btn-success btn-sm">Edit</button>
                 </Link>
                 <button

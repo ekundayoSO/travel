@@ -41,6 +41,15 @@ const Itinerary = () => {
       .post("http://localhost:8002/api/activities", activities)
       .then((response) => {
         console.log("Success:", response.data);
+        setActivities({
+          dayOne: "",
+          dayTwo: "",
+          dayThree: "",
+          dayFour: "",
+          dayFive: "",
+        });
+        setCurrentActivity("");
+        setSelectedDay("dayOne");
         navigate("/activities");
       })
       .catch((error) => console.error("Error:", error));
@@ -48,9 +57,9 @@ const Itinerary = () => {
 
   return (
     <form onSubmit={handleSubmit} className="mb-2" style={{ width: 800 }}>
-      <h1>Add Activity</h1>
+      <h1>To Do List</h1>
       <div>
-        <label htmlFor="day">Select Day</label>
+        <label htmlFor="day"></label>
         <select
           id="day"
           value={selectedDay}
@@ -64,41 +73,43 @@ const Itinerary = () => {
         </select>
       </div>
       <div>
-        <label htmlFor="activity">Activity</label>
+        <label htmlFor="activity"></label>
         <input
           id="activity"
           value={currentActivity}
           onChange={(e) => setCurrentActivity(e.target.value)}
-          placeholder="Enter activity"
+          placeholder="To do"
         />
         <button
           onClick={handleAddActivity}
           className="btn btn-primary btn-sm ml-2"
         >
-          Add Activity
+          Add
         </button>
       </div>
-      {Object.keys(activities).map((day) => (
-        <div key={day}>
-          <h3>{day.replace("day", "Day ")}</h3>
-          <ol>
-            {activities[day]
-              .split(", ")
-              .filter((activity) => activity) // Filter out any empty strings
-              .map((activity, index) => (
-                <li key={index}>
-                  {activity}
-                  <button
-                    onClick={() => handleDeleteActivity(day, activity)}
-                    className="btn btn-danger btn-sm ml-2"
-                  >
-                    Delete
-                  </button>
-                </li>
-              ))}
-          </ol>
-        </div>
-      ))}
+      {Object.keys(activities).map((day) =>
+        activities[day] ? (
+          <div key={day}>
+            <h3>{day.replace("day", "Day ")}</h3>
+            <ol>
+              {activities[day]
+                .split(", ")
+                .filter((activity) => activity)
+                .map((activity, index) => (
+                  <li key={index}>
+                    {activity}
+                    <button
+                      onClick={() => handleDeleteActivity(day, activity)}
+                      className="btn btn-danger btn-sm ml-2"
+                    >
+                      Delete
+                    </button>
+                  </li>
+                ))}
+            </ol>
+          </div>
+        ) : null
+      )}
       <button className="btn btn-success btn-sm mt-2" type="submit">
         Submit
       </button>

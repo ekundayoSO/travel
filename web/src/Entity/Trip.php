@@ -26,10 +26,10 @@ class Trip
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $checkOut = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $mobile = null;
 
     #[ORM\Column]
@@ -96,7 +96,7 @@ class Trip
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 
